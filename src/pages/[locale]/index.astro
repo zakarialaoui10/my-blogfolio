@@ -76,6 +76,40 @@ const ui = dictionary[locale as keyof typeof dictionary] || dictionary.en;
       background-color: var(--bg-projects);
       color: var(--text-projects); 
     }
+    @media (min-width: 768px) {
+        .portfolio-section { 
+          padding-block: var(--nav-height) 0; 
+        }
+      }
   </style>
+
+  <script>
+          // Target selection links lookup for highlighted tabs active tracking
+      const navLinks = document.querySelectorAll('#mobile-menu-drawer a');
+      const targetSections = document.querySelectorAll('#home-view, #about-view, #projects-view');
+
+      const observerOptions = {
+        root: null,
+        rootMargin: '-40% 0px -50% 0px',
+        threshold: 0
+      };
+
+      const observerCallback = (entries: IntersectionObserverEntry[]) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const sectionId = entry.target.getAttribute('id');
+            navLinks.forEach((link) => {
+              const hrefAttribute = link.getAttribute('href');
+              hrefAttribute && hrefAttribute.endsWith(`#${sectionId}`) 
+                ? link.classList.add('is-active')
+                : link.classList.remove('is-active');
+            });
+          }
+        });
+      };
+
+      const sectionObserver = new IntersectionObserver(observerCallback, observerOptions);
+      targetSections.forEach((section) => sectionObserver.observe(section));
+  </script>
 
 </BaseLayout>
