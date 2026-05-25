@@ -1,0 +1,95 @@
+---
+interface Props {
+  currentLocale: string | undefined;
+}
+const { currentLocale = "en" } = Astro.props;
+const languages = [
+  { code: 'en', label: 'English' },
+  { code: 'ar', label: 'العربية' },
+//   { code: 'fr', label: 'Français' },
+//   { code: 'es', label: 'Español' }
+];
+---
+<select id="global-language-selector" class="lang-switcher-dropdown" aria-label="Select Interface Language">
+    {languages.map((lang) => (
+        <option value={lang.code} selected={lang.code === currentLocale}>
+        {lang.label}
+        </option>
+    ))}
+</select>
+
+<style>
+.lang-switcher-dropdown {
+    background-color: var(--bg-modal);
+    border: 1px solid var(--border-card);
+    color: var(--text-nav);
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    font-weight: 600;
+    height: 38px;
+    padding-inline-start: 0.5rem;
+    padding-inline-end: 1.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    outline: none;
+}
+</style>
+
+<script>
+    // Inside the <script> tag of src/layouts/BaseLayout.astro
+
+const langSelector = document.getElementById('global-language-selector') as HTMLSelectElement | null;
+const SUPPORTED_LOCALES = [
+    'en', 
+    'ar', 
+    // 'fr', 
+    // 'es'
+];
+
+// Helper to calculate the destination path for a given locale code
+function getTargetUrl(targetLocale: string): string {
+  const currentSegments = window.location.pathname.split('/').filter(Boolean);
+  
+  if (SUPPORTED_LOCALES.includes(currentSegments[0])) {
+    currentSegments.shift();
+  }
+
+  const remainingPath = currentSegments.join('/');
+  return `/${targetLocale}/${remainingPath}`;
+}
+
+// Map to track URLs we've already prefetched during this session
+const prefetchedUrls = new Set<string>();
+
+function prefetchLanguageRoutes() {
+  SUPPORTED_LOCALES.forEach((locale) => {
+    // Don't prefetch the language the user is currently viewing
+    if (locale === langSelector?.value) return;
+
+    const targetUrl = getTargetUrl(locale);
+
+    // If already prefetched, skip to save bandwidth
+    if (prefetchedUrls.has(targetUrl)) return;
+
+    // Inject <link rel="prefetch" href="..."> securely into document head
+    const prefetchLink = document.createElement('link');
+    prefetchLink.rel = 'prefetch';
+    prefetchLink.href = targetUrl;
+    prefetchLink.as = 'document'; // Explicitly hint it's a structural page document
+    
+    document.head.appendChild(prefetchLink);
+    prefetchedUrls.add(targetUrl);
+  });
+}
+
+// Trigger prefetching on pointer hover or keyboard focus state
+langSelector?.addEventListener('pointerenter', prefetchLanguageRoutes, { once: true });
+langSelector?.addEventListener('focus', prefetchLanguageRoutes, { once: true });
+
+// Existing change listener routing logic below...
+langSelector?.addEventListener('change', (e) => {
+  const targetLocale = (e.target as HTMLSelectElement).value;
+  const hash = window.location.hash;
+  window.location.href = `${getTargetUrl(targetLocale)}${hash}`;
+});
+</script>
