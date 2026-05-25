@@ -1,8 +1,9 @@
 ---
-interface Props {
-  currentLocale: string | undefined;
-}
-const { currentLocale = "en" } = Astro.props;
+// interface Props {
+//   currentLocale: string | undefined;
+// }
+// const { currentLocale = "en" } = Astro.props;
+const { currentLocale } = Astro; 
 const languages = [
   { code: 'en', label: 'English' },
   { code: 'ar', label: 'العربية' },

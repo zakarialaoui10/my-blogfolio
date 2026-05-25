@@ -1,5 +1,8 @@
 ---
 // src/components/base/MobileNav.astro
+import {ThemeSwitcher} from './ThemeSwitcher/index.js'
+import LanguageSelector from './LanguageSelector.astro'
+const { currentLocale } = Astro; 
 ---
 
 <button id="burger-menu-toggle" class="burger-trigger" aria-label="Toggle navigation interface" aria-expanded="false">
@@ -67,6 +70,7 @@
       width: auto;
     }
   }
+
 </style>
 
 <script>

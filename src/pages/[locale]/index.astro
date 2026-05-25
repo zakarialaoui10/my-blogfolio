@@ -1,5 +1,9 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
+import { 
+  ThemeSwitcher,
+  LanguageSelector
+ } from '@components/base';
 import dictionary from '@i18n/portfolio.json' with { type : "json" }
 
 export function getStaticPaths() {
@@ -25,7 +29,8 @@ const ui = dictionary[locale as keyof typeof dictionary] || dictionary.en;
     <li><a href={`/${locale}#home-view`} class="is-active">{ui.navHome}</a></li>
     <li><a href={`/${locale}#about-view`}>{ui.navAbout}</a></li>
     <li><a href={`/${locale}#projects-view`}>{ui.navProjects}</a></li>
-    <!-- <div id="moving-nav-slider" class="nav-indicator-slider"></div> -->
+    <ThemeSwitcher client:load/>
+    <LanguageSelector />
   </ul>
 
   <!-- Main View Component Blocks -->

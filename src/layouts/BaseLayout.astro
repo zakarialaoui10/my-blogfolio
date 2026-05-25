@@ -13,7 +13,7 @@ interface Props {
 }
 
 const { title, description = "Dynamic Adaptive Platform" } = Astro.props;
-const { currentLocale } = Astro;
+const { currentLocale } = Astro; 
 
 const isRTL = currentLocale === 'ar';
 const dir = isRTL ? 'rtl' : 'ltr';
@@ -100,6 +100,7 @@ const dir = isRTL ? 'rtl' : 'ltr';
         list-style: none;
         width: 100%;
         position: relative;
+        align-items: center;
       }
 
       .nav-links-list a {
@@ -191,13 +192,10 @@ const dir = isRTL ? 'rtl' : 'ltr';
         <slot name="nav-logo"><strong>Core.</strong></slot>
         
         <div class="nav-controls">
+          <GlobalSearch />
           <MobileNav>
             <slot name="nav-links" />
           </MobileNav>
-
-          <GlobalSearch />
-          <ThemeSwitcher client:load/>
-          <LanguageSelector currentLocale={currentLocale} />
         </div>
       </div>
     </header>
