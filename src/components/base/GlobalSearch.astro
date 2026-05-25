@@ -1,0 +1,245 @@
+---
+---
+
+<button id="search-modal-open-btn" class="search-bar-trigger" aria-label="Open global search">
+  <div class="search-bar-trigger-left">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="11" cy="11" r="8"></circle>
+      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+    </svg>
+    <span class="search-bar-trigger-hint">Search...</span>
+  </div>
+  <kbd class="search-bar-trigger-kbd">Ctrl K</kbd>
+</button>
+
+<div id="search-overlay" class="search-modal-overlay" role="dialog" aria-modal="true">
+  <div class="search-modal-card">
+    <div class="search-modal-header">
+      <div class="search-input-container">
+        <svg class="search-field-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="search" id="modal-search-field" class="search-input-field" placeholder="Search parameters..." autocomplete="off" />
+      </div>
+      <kbd class="search-close-instructions">ESC</kbd>
+      <button id="search-modal-close-btn" class="nav-icon-btn" aria-label="Close layout overlay">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="12"></line>
+        </svg>
+      </button>
+    </div>
+    <div class="search-modal-body">
+      <div id="search-results-root">Type to explore ...</div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* All search styling remains self-contained here */
+  .search-bar-trigger {
+    background-color: var(--bg-search-trigger);
+    border: 1px solid var(--border-card);
+    color: var(--text-search-placeholder);
+    font-family: var(--font-sans);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    padding-inline: 0.75rem;
+    height: 38px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    user-select: none;
+    transition: border-color var(--transition-speed) var(--transition-timing), background-color var(--transition-speed) var(--transition-timing);
+  }
+
+  .search-bar-trigger:hover {
+    border-color: rgba(125, 125, 125, 0.25);
+  }
+
+  .search-bar-trigger-left {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .search-bar-trigger-hint {
+    display: none;
+    font-weight: 400;
+  }
+
+  .search-bar-trigger-kbd {
+    display: none;
+    font-family: inherit;
+    font-size: 0.75rem;
+    background-color: var(--kbd-bg);
+    border: 1px solid var(--kbd-border);
+    color: var(--text-search-placeholder);
+    padding-block: 0.15rem;
+    padding-inline: 0.4rem;
+    border-radius: 4px;
+  }
+
+  .search-modal-overlay {
+    position: fixed;
+    top: 0;
+    inset-inline-start: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-overlay);
+    backdrop-filter: blur(4px);
+    z-index: 200;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-block: 4rem;
+    padding-inline: 1rem;
+    opacity: 0;
+    pointer-events: none;
+    will-change: opacity;
+    transition: opacity var(--transition-speed) var(--transition-timing);
+  }
+
+  .search-modal-overlay.is-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .search-modal-card {
+    background-color: var(--bg-modal);
+    width: 100%;
+    max-width: 550px;
+    border-radius: 12px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--border-card);
+    overflow: hidden;
+    transform: translateY(-20px);
+    will-change: transform;
+    transition: transform var(--transition-speed) var(--transition-timing);
+  }
+
+  .search-modal-overlay.is-open .search-modal-card {
+    transform: translateY(0);
+  }
+
+  .search-modal-header {
+    display: flex;
+    align-items: center;
+    padding-block: 1rem;
+    padding-inline: 1.25rem;
+    border-bottom: 1px solid var(--border-card);
+    gap: 0.75rem;
+  }
+
+  .search-input-container {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .search-input-field {
+    width: 100%;
+    background-color: var(--bg-search-input);
+    border: 1px solid var(--border-card);
+    color: inherit;
+    font-family: inherit;
+    font-size: 1rem;
+    padding-block: 0.65rem;
+    padding-inline-start: 2.25rem;
+    padding-inline-end: 1rem;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color var(--transition-speed) var(--transition-timing);
+  }
+
+  .search-field-icon {
+    position: absolute;
+    inset-inline-start: 0.75rem; 
+    color: var(--text-modal-muted);
+    pointer-events: none;
+  }
+
+  .search-close-instructions {
+    font-size: 0.75rem;
+    color: var(--text-modal-muted);
+    border: 1px solid var(--border-card);
+    padding-block: 0.2rem;
+    padding-inline: 0.4rem;
+    border-radius: 4px;
+    background-color: var(--bg-search-input);
+    display: none;
+    user-select: none;
+  }
+
+  .search-modal-body {
+    padding: 1.5rem;
+    min-height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-modal-muted);
+    font-size: 0.95rem;
+  }
+
+  .nav-icon-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-nav);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 6px;
+    transition: color var(--transition-speed) var(--transition-timing), background-color var(--transition-speed) var(--transition-timing);
+  }
+
+  .nav-icon-btn:hover {
+    background-color: rgba(125, 125, 125, 0.1);
+  }
+
+  @media (min-width: 768px) {
+    .search-modal-overlay { padding-block: 8rem; }
+    .search-close-instructions { display: block; }
+    .search-bar-trigger-hint { display: block; }
+    .search-bar-trigger-kbd { display: block; }
+  }
+</style>
+
+<script>
+  // Dynamic functional listeners bundled cleanly alongside the nodes
+  const searchOpenBtn = document.getElementById('search-modal-open-btn');
+  const searchCloseBtn = document.getElementById('search-modal-close-btn');
+  const searchOverlay = document.getElementById('search-overlay');
+  const searchInputField = document.getElementById('modal-search-field') as HTMLInputElement | null;
+
+  const openSearchModal = () => {
+    searchOverlay?.classList.add('is-open');
+    document.body.classList.add('search-modal-open');
+    setTimeout(() => searchInputField?.focus(), 50);
+  };
+
+  const closeSearchModal = () => {
+    searchOverlay?.classList.remove('is-open');
+    document.body.classList.remove('search-modal-open');
+  };
+
+  searchOpenBtn?.addEventListener('click', openSearchModal);
+  searchCloseBtn?.addEventListener('click', closeSearchModal);
+  searchOverlay?.addEventListener('click', (e) => {
+    if (e.target === searchOverlay) closeSearchModal();
+  });
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && searchOverlay?.classList.contains('is-open')) closeSearchModal();
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+      e.preventDefault();
+      searchOverlay?.classList.contains('is-open') ? closeSearchModal() : openSearchModal();
+    }
+  });
+</script>

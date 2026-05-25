@@ -1,0 +1,83 @@
+---
+// src/components/base/MobileNav.astro
+---
+
+<button id="burger-menu-toggle" class="burger-trigger" aria-label="Toggle navigation interface" aria-expanded="false">
+  <span class="burger-bar"></span>
+  <span class="burger-bar"></span>
+  <span class="burger-bar"></span>
+</button>
+
+<div id="mobile-menu-drawer" class="nav-menu-wrapper">
+  <slot />
+</div>
+
+<style>
+  .nav-menu-wrapper {
+    position: absolute;
+    top: var(--nav-height);
+    inset-inline-start: 0;
+    width: 100%;
+    background-color: var(--bg-nav);
+    border-bottom: 1px solid var(--border-nav);
+    padding: 2rem 1.5rem;
+    display: none; 
+    z-index: 99;
+  }
+
+  .nav-menu-wrapper.is-active {
+    display: block;
+  }
+
+  .burger-trigger {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 24px;
+    height: 18px;
+    z-index: 101;
+    margin-inline-start: 0.25rem;
+  }
+
+  .burger-bar {
+    width: 100%;
+    height: 2px;
+    background-color: var(--text-nav);
+    transition: transform var(--transition-speed) var(--transition-timing), opacity var(--transition-speed) var(--transition-timing);
+  }
+
+  .burger-trigger.is-active .burger-bar:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+  .burger-trigger.is-active .burger-bar:nth-child(2) { opacity: 0; }
+  .burger-trigger.is-active .burger-bar:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+  @media (min-width: 768px) {
+    .burger-trigger { 
+      display: none; 
+    }
+
+    .nav-menu-wrapper {
+      position: static;
+      display: block;
+      padding: 0;
+      background-color: transparent;
+      border-bottom: none;
+      width: auto;
+    }
+  }
+</style>
+
+<script>
+  const burgerBtn = document.getElementById('burger-menu-toggle');
+  const navMenu = document.getElementById('mobile-menu-drawer');
+
+  const toggleMobileMenu = () => {
+    const isOpen = burgerBtn?.classList.toggle('is-active');
+    navMenu?.classList.toggle('is-active');
+    burgerBtn?.setAttribute('aria-expanded', String(isOpen));
+  };
+
+  burgerBtn?.addEventListener('click', toggleMobileMenu);
+</script>

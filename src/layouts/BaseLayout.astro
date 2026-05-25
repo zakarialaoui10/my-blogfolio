@@ -1,5 +1,12 @@
 ---
-import { LanguageSelector, ThemeSwitcher } from '@components/base';
+// src/layouts/BaseLayout.astro
+import { 
+  GlobalSearch,
+  MobileNav,
+  LanguageSelector, 
+  ThemeSwitcher 
+} from '@components/base';
+
 interface Props {
   title: string;
   description?: string;
@@ -10,7 +17,6 @@ const { currentLocale } = Astro;
 
 const isRTL = currentLocale === 'ar';
 const dir = isRTL ? 'rtl' : 'ltr';
-
 ---
 
 <!DOCTYPE html>
@@ -24,7 +30,7 @@ const dir = isRTL ? 'rtl' : 'ltr';
     <style is:global>
       @import url("@styles/root.css");
       @import url("@components/base/ThemeSwitcher/index.css");
-
+      
       body.search-modal-open {
         overflow: hidden;
       }
@@ -49,6 +55,24 @@ const dir = isRTL ? 'rtl' : 'ltr';
         border-bottom: 1px solid var(--border-nav);
       }
 
+      .nav-icon-btn {
+        background: transparent;
+        border: none;
+        color: var(--text-nav);
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 38px;
+        height: 38px;
+        border-radius: 6px;
+        transition: color var(--transition-speed) var(--transition-timing), background-color var(--transition-speed) var(--transition-timing);
+      }
+
+      .nav-icon-btn:hover {
+        background-color: rgba(125, 125, 125, 0.1);
+      }
+
       .layout-container {
         width: 100%;
         max-width: 1200px;
@@ -67,22 +91,6 @@ const dir = isRTL ? 'rtl' : 'ltr';
         display: flex;
         align-items: center;
         gap: 0.75rem;
-      }
-
-      .nav-menu-wrapper {
-        position: absolute;
-        top: var(--nav-height);
-        inset-inline-start: 0;
-        width: 100%;
-        background-color: var(--bg-nav);
-        border-bottom: 1px solid var(--border-nav);
-        padding: 2rem 1.5rem;
-        display: none; 
-        z-index: 99;
-      }
-
-      .nav-menu-wrapper.is-active {
-        display: block;
       }
 
       .nav-links-list {
@@ -106,194 +114,6 @@ const dir = isRTL ? 'rtl' : 'ltr';
       .nav-links-list a.is-active {
         color: var(--accent-color); 
       }
-
-      .nav-icon-btn {
-        background: transparent;
-        border: none;
-        color: var(--text-nav);
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 38px;
-        height: 38px;
-        border-radius: 6px;
-        transition: color var(--transition-speed) var(--transition-timing), background-color var(--transition-speed) var(--transition-timing);
-      }
-
-      .nav-icon-btn:hover {
-        background-color: rgba(125, 125, 125, 0.1);
-      }
-
-      .search-bar-trigger {
-        background-color: var(--bg-search-trigger);
-        border: 1px solid var(--border-card);
-        color: var(--text-search-placeholder);
-        font-family: var(--font-sans);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 2rem;
-        padding-inline: 0.75rem;
-        height: 38px;
-        border-radius: 8px;
-        cursor: pointer;
-        font-size: 0.875rem;
-        user-select: none;
-        transition: border-color var(--transition-speed) var(--transition-timing), background-color var(--transition-speed) var(--transition-timing);
-      }
-
-      .search-bar-trigger:hover {
-        border-color: rgba(125, 125, 125, 0.25);
-      }
-
-      .search-bar-trigger-left {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-
-      .search-bar-trigger-hint {
-        display: none;
-        font-weight: 400;
-      }
-
-      .search-bar-trigger-kbd {
-        display: none;
-        font-family: inherit;
-        font-size: 0.75rem;
-        background-color: var(--kbd-bg);
-        border: 1px solid var(--kbd-border);
-        color: var(--text-search-placeholder);
-        padding-block: 0.15rem;
-        padding-inline: 0.4rem;
-        border-radius: 4px;
-      }
-      .search-modal-overlay {
-        position: fixed;
-        top: 0;
-        inset-inline-start: 0;
-        width: 100%;
-        height: 100%;
-        background-color: var(--bg-overlay);
-        backdrop-filter: blur(4px);
-        z-index: 200;
-        display: flex;
-        align-items: flex-start;
-        justify-content: center;
-        padding-block: 4rem;
-        padding-inline: 1rem;
-        opacity: 0;
-        pointer-events: none;
-        will-change: opacity;
-        transition: opacity var(--transition-speed) var(--transition-timing);
-      }
-
-      .search-modal-overlay.is-open {
-        opacity: 1;
-        pointer-events: auto;
-      }
-
-      .search-modal-card {
-        background-color: var(--bg-modal);
-        width: 100%;
-        max-width: 550px;
-        border-radius: 12px;
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-        border: 1px solid var(--border-card);
-        overflow: hidden;
-        transform: translateY(-20px);
-        will-change: transform;
-        transition: transform var(--transition-speed) var(--transition-timing);
-      }
-
-      .search-modal-overlay.is-open .search-modal-card {
-        transform: translateY(0);
-      }
-
-      .search-modal-header {
-        display: flex;
-        align-items: center;
-        padding-block: 1rem;
-        padding-inline: 1.25rem;
-        border-bottom: 1px solid var(--border-card);
-        gap: 0.75rem;
-      }
-
-      .search-input-container {
-        flex: 1;
-        position: relative;
-        display: flex;
-        align-items: center;
-      }
-
-      .search-input-field {
-        width: 100%;
-        background-color: var(--bg-search-input);
-        border: 1px solid var(--border-card);
-        color: inherit;
-        font-family: inherit;
-        font-size: 1rem;
-        padding-block: 0.65rem;
-        padding-inline-start: 2.25rem;
-        padding-inline-end: 1rem;
-        border-radius: 8px;
-        outline: none;
-        transition: border-color var(--transition-speed) var(--transition-timing);
-      }
-
-      .search-field-icon {
-        position: absolute;
-        inset-inline-start: 0.75rem; 
-        color: var(--text-modal-muted);
-        pointer-events: none;
-      }
-
-      .search-close-instructions {
-        font-size: 0.75rem;
-        color: var(--text-modal-muted);
-        border: 1px solid var(--border-card);
-        padding-block: 0.2rem;
-        padding-inline: 0.4rem;
-        border-radius: 4px;
-        background-color: var(--bg-search-input);
-        display: none;
-        user-select: none;
-      }
-
-      .search-modal-body {
-        padding: 1.5rem;
-        min-height: 150px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--text-modal-muted);
-        font-size: 0.95rem;
-      }
-
-      .burger-trigger {
-        background: transparent;
-        border: none;
-        cursor: pointer;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        width: 24px;
-        height: 18px;
-        z-index: 101;
-        margin-inline-start: 0.25rem;
-      }
-
-      .burger-bar {
-        width: 100%;
-        height: 2px;
-        background-color: var(--text-nav);
-        transition: transform var(--transition-speed) var(--transition-timing), opacity var(--transition-speed) var(--transition-timing);
-      }
-
-      .burger-trigger.is-active .burger-bar:nth-child(1) { transform: translateY(8px) rotate(45deg); }
-      .burger-trigger.is-active .burger-bar:nth-child(2) { opacity: 0; }
-      .burger-trigger.is-active .burger-bar:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
       .portfolio-section {
         min-height: 100vh;
@@ -339,19 +159,6 @@ const dir = isRTL ? 'rtl' : 'ltr';
       @media (min-width: 768px) {
         .layout-container { padding-inline: 3rem; }
         .portfolio-section { padding-block: var(--nav-height) 0; }
-        .search-modal-overlay { padding-block: 8rem; }
-        .search-close-instructions { display: block; }
-        .search-bar-trigger-hint { display: block; }
-        .search-bar-trigger-kbd { display: block; }
-
-        .nav-menu-wrapper {
-          position: static;
-          display: block;
-          padding: 0;
-          background-color: transparent;
-          border-bottom: none;
-          width: auto;
-        }
 
         .nav-links-list {
           flex-direction: row;
@@ -359,7 +166,6 @@ const dir = isRTL ? 'rtl' : 'ltr';
           margin-inline-end: 1rem;
         }
 
-        .burger-trigger { display: none; }
         .flex-split { flex-direction: row; align-items: center; }
         .flex-grid-item { flex: 1 1 calc(50% - 1rem); }
       }
@@ -385,46 +191,16 @@ const dir = isRTL ? 'rtl' : 'ltr';
         <slot name="nav-logo"><strong>Core.</strong></slot>
         
         <div class="nav-controls">
-          <div id="mobile-menu-drawer" class="nav-menu-wrapper">
+          <MobileNav>
             <slot name="nav-links" />
-          </div>
+          </MobileNav>
 
-          <button id="search-modal-open-btn" class="search-bar-trigger" aria-label="Open global search">
-            <div class="search-bar-trigger-left">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-              <span class="search-bar-trigger-hint">Search...</span>
-            </div>
-            <kbd class="search-bar-trigger-kbd">Ctrl K</kbd>
-          </button>
+          <GlobalSearch />
           <ThemeSwitcher client:load/>
           <LanguageSelector currentLocale={currentLocale} />
-          
-          <button id="burger-menu-toggle" class="burger-trigger" aria-label="Toggle navigation interface" aria-expanded="false">
-            <span class="burger-bar"></span>
-            <span class="burger-bar"></span>
-            <span class="burger-bar"></span>
-          </button>
         </div>
       </div>
     </header>
-
-    <div id="search-overlay" class="search-modal-overlay" role="dialog" aria-modal="true">
-      <div class="search-modal-card">
-        <div class="search-modal-header">
-          <div class="search-input-container">
-            <svg class="search-field-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-            <input type="search" id="modal-search-field" class="search-input-field" placeholder="Search parameters..." autocomplete="off" />
-          </div>
-          <kbd class="search-close-instructions">ESC</kbd>
-          <button id="search-modal-close-btn" class="nav-icon-btn" aria-label="Close layout overlay">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-          </button>
-        </div>
-        <div class="search-modal-body">
-          <div id="search-results-root">Type to explore ...</div>
-        </div>
-      </div>
-    </div>
 
     <main>
       <slot />
@@ -432,53 +208,13 @@ const dir = isRTL ? 'rtl' : 'ltr';
 
     <script>
       const header = document.getElementById('portfolio-navbar');
-      const burgerBtn = document.getElementById('burger-menu-toggle');
-      const navMenu = document.getElementById('mobile-menu-drawer');
-
-      // Modal Setup
-      const searchOpenBtn = document.getElementById('search-modal-open-btn');
-      const searchCloseBtn = document.getElementById('search-modal-close-btn');
-      const searchOverlay = document.getElementById('search-overlay');
-      const searchInputField = document.getElementById('modal-search-field') as HTMLInputElement | null;
-
-      const openSearchModal = () => {
-        searchOverlay?.classList.add('is-open');
-        document.body.classList.add('search-modal-open');
-        setTimeout(() => searchInputField?.focus(), 50);
-      };
-
-      const closeSearchModal = () => {
-        searchOverlay?.classList.remove('is-open');
-        document.body.classList.remove('search-modal-open');
-      };
-
-      searchOpenBtn?.addEventListener('click', openSearchModal);
-      searchCloseBtn?.addEventListener('click', closeSearchModal);
-      searchOverlay?.addEventListener('click', (e) => {
-        if (e.target === searchOverlay) closeSearchModal();
-      });
-
-      window.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && searchOverlay?.classList.contains('is-open')) closeSearchModal();
-        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
-          e.preventDefault();
-          searchOverlay?.classList.contains('is-open') ? closeSearchModal() : openSearchModal();
-        }
-      });
 
       window.addEventListener('scroll', () => {
         if (window.scrollY > 50) header?.classList.add('is-scrolled');
         else header?.classList.remove('is-scrolled');
       });
 
-      const toggleMobileMenu = () => {
-        const isOpen = burgerBtn?.classList.toggle('is-active');
-        navMenu?.classList.toggle('is-active');
-        burgerBtn?.setAttribute('aria-expanded', String(isOpen));
-      };
-
-      burgerBtn?.addEventListener('click', toggleMobileMenu);
-
+      // Target selection links lookup for highlighted tabs active tracking
       const navLinks = document.querySelectorAll('#mobile-menu-drawer a');
       const targetSections = document.querySelectorAll('#home-view, #about-view, #projects-view');
 
@@ -492,13 +228,11 @@ const dir = isRTL ? 'rtl' : 'ltr';
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             const sectionId = entry.target.getAttribute('id');
-            let matchedLink: HTMLElement | null = null;
 
             navLinks.forEach((link) => {
               const hrefAttribute = link.getAttribute('href');
               if (hrefAttribute && hrefAttribute.endsWith(`#${sectionId}`)) {
                 link.classList.add('is-active');
-                matchedLink = link as HTMLElement;
               } else {
                 link.classList.remove('is-active');
               }
@@ -509,7 +243,6 @@ const dir = isRTL ? 'rtl' : 'ltr';
 
       const sectionObserver = new IntersectionObserver(observerCallback, observerOptions);
       targetSections.forEach((section) => sectionObserver.observe(section));
-
     </script>
   </body>
 </html>

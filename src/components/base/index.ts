@@ -1,4 +1,5 @@
 export { default as LanguageSelector} from './LanguageSelector.astro'
 // export { default as ThemeSwitcher } from './ThemeSwitcher.astro'
-export { default as SearchModal } from './SearchModal.astro'
+export { default as GlobalSearch } from './GlobalSearch.astro'
+export { default as MobileNav } from './MobileNav.astro'
 export * from './ThemeSwitcher/index.js'
