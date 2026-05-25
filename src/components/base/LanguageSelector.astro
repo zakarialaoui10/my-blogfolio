@@ -93,3 +93,15 @@ langSelector?.addEventListener('change', (e) => {
   window.location.href = `${getTargetUrl(targetLocale)}${hash}`;
 });
 </script>
+
+<style>
+  html[dir="rtl"] .lang-switcher-dropdown {
+    background-position: left 0.5rem center;
+    padding-inline-start: 1.5rem;
+    padding-inline-end: 0.5rem;
+  }
+
+  .lang-switcher-dropdown:focus {
+    outline: 2px solid var(--accent-color);
+  }
+</style>

@@ -1,0 +1,5 @@
+      .nav-icon-btn .icon-sun { display: block; }
+      .nav-icon-btn .icon-moon { display: none; }
+
+      [data-theme="dark"] .nav-icon-btn .icon-sun { display: none; }
+      [data-theme="dark"] .nav-icon-btn .icon-moon { display: block; }

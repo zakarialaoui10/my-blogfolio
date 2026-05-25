@@ -9,7 +9,7 @@
       "@layouts/*": ["./src/layouts/*"],
       "@utils/*": ["./src/utils/*"],
       "@styles/*": ["./src/styles/*"],
-      "@translations/*": ["./src/translations/*"],
+      "@i18n/*": ["./src/i18n/*"],
       
     }
   }

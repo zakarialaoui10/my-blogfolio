@@ -1,6 +1,5 @@
 ---
 import { LanguageSelector, ThemeSwitcher } from '@components/base';
-// src/layouts/BaseLayout.astro
 interface Props {
   title: string;
   description?: string;
@@ -9,7 +8,6 @@ interface Props {
 const { title, description = "Dynamic Adaptive Platform" } = Astro.props;
 const { currentLocale } = Astro;
 
-// Compute writing alignment dynamically
 const isRTL = currentLocale === 'ar';
 const dir = isRTL ? 'rtl' : 'ltr';
 
@@ -25,7 +23,7 @@ const dir = isRTL ? 'rtl' : 'ltr';
     
     <style is:global>
       @import url("@styles/root.css");
-      
+      @import url("@components/base/ThemeSwitcher/index.css");
 
       body.search-modal-open {
         overflow: hidden;
@@ -127,12 +125,6 @@ const dir = isRTL ? 'rtl' : 'ltr';
         background-color: rgba(125, 125, 125, 0.1);
       }
 
-      .nav-icon-btn .icon-sun { display: block; }
-      .nav-icon-btn .icon-moon { display: none; }
-
-      [data-theme="dark"] .nav-icon-btn .icon-sun { display: none; }
-      [data-theme="dark"] .nav-icon-btn .icon-moon { display: block; }
-
       .search-bar-trigger {
         background-color: var(--bg-search-trigger);
         border: 1px solid var(--border-card);
@@ -177,17 +169,6 @@ const dir = isRTL ? 'rtl' : 'ltr';
         padding-inline: 0.4rem;
         border-radius: 4px;
       }
-
-      html[dir="rtl"] .lang-switcher-dropdown {
-        background-position: left 0.5rem center;
-        padding-inline-start: 1.5rem;
-        padding-inline-end: 0.5rem;
-      }
-
-      .lang-switcher-dropdown:focus {
-        border-color: var(--accent-color);
-      }
-
       .search-modal-overlay {
         position: fixed;
         top: 0;
@@ -415,7 +396,7 @@ const dir = isRTL ? 'rtl' : 'ltr';
             </div>
             <kbd class="search-bar-trigger-kbd">Ctrl K</kbd>
           </button>
-          <ThemeSwitcher />
+          <ThemeSwitcher client:load/>
           <LanguageSelector currentLocale={currentLocale} />
           
           <button id="burger-menu-toggle" class="burger-trigger" aria-label="Toggle navigation interface" aria-expanded="false">
@@ -440,7 +421,7 @@ const dir = isRTL ? 'rtl' : 'ltr';
           </button>
         </div>
         <div class="search-modal-body">
-          <div id="search-results-root">Type to explore...</div>
+          <div id="search-results-root">Type to explore ...</div>
         </div>
       </div>
     </div>
@@ -453,7 +434,6 @@ const dir = isRTL ? 'rtl' : 'ltr';
       const header = document.getElementById('portfolio-navbar');
       const burgerBtn = document.getElementById('burger-menu-toggle');
       const navMenu = document.getElementById('mobile-menu-drawer');
-      // const movingSlider = document.getElementById('moving-nav-slider');
 
       // Modal Setup
       const searchOpenBtn = document.getElementById('search-modal-open-btn');

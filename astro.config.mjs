@@ -1,9 +1,13 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
+import Ziko from 'ziko-wrapper/astro'
 
 // https://astro.build/config
 export default defineConfig({
-    i18n: {
+  integrations:[
+    Ziko()
+  ],
+  i18n: {
     defaultLocale: 'en',
     locales: ['en', 'ar'],
     routing: {
