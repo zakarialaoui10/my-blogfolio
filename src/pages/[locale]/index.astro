@@ -16,14 +16,12 @@ export function getStaticPaths() {
 const { locale } = Astro.params;
 
 
-// Fallback to English safety defaults if localization gets lost
 const ui = dictionary[locale as keyof typeof dictionary] || dictionary.en;
 ---
 
 <BaseLayout title={ui.title} description="Interactive 3D Graphics Platform">
   
-  <!-- Setup Header Navigation elements -->
-  <strong slot="nav-logo">Dev.Core</strong>
+  <strong slot="nav-logo">&ltZakaria Elalaoui /&gt</strong>
   
   <ul slot="nav-links" class="nav-links-list">
     <li><a href={`/${locale}#home-view`} class="is-active">{ui.navHome}</a></li>
@@ -55,5 +53,29 @@ const ui = dictionary[locale as keyof typeof dictionary] || dictionary.en;
   <script>
     
   </script>
+
+  <style is:global>
+    .portfolio-section {
+      min-height: 100vh;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-block: calc(var(--nav-height) + 2rem) 4rem;
+      transition: background-color var(--transition-speed) var(--transition-timing), color var(--transition-speed) var(--transition-timing);
+    }
+    .section-hero { 
+      background-color: var(--bg-hero);
+      color: var(--text-hero); 
+    }
+    .section-about { 
+      background-color: var(--bg-about);
+      color: var(--text-about); 
+    }
+    .section-projects { 
+      background-color: var(--bg-projects);
+      color: var(--text-projects); 
+    }
+  </style>
 
 </BaseLayout>

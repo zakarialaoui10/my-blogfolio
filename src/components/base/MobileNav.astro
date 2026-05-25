@@ -1,8 +1,5 @@
 ---
-// src/components/base/MobileNav.astro
-import {ThemeSwitcher} from './ThemeSwitcher/index.js'
-import LanguageSelector from './LanguageSelector.astro'
-const { currentLocale } = Astro; 
+
 ---
 
 <button id="burger-menu-toggle" class="burger-trigger" aria-label="Toggle navigation interface" aria-expanded="false">
@@ -52,9 +49,15 @@ const { currentLocale } = Astro;
     transition: transform var(--transition-speed) var(--transition-timing), opacity var(--transition-speed) var(--transition-timing);
   }
 
-  .burger-trigger.is-active .burger-bar:nth-child(1) { transform: translateY(8px) rotate(45deg); }
-  .burger-trigger.is-active .burger-bar:nth-child(2) { opacity: 0; }
-  .burger-trigger.is-active .burger-bar:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+  .burger-trigger.is-active .burger-bar:nth-child(1) { 
+    transform: translateY(8px) rotate(45deg); 
+  }
+  .burger-trigger.is-active .burger-bar:nth-child(2) { 
+    opacity: 0; 
+  }
+  .burger-trigger.is-active .burger-bar:nth-child(3) { 
+    transform: translateY(-8px) rotate(-45deg); 
+  }
 
   @media (min-width: 768px) {
     .burger-trigger { 

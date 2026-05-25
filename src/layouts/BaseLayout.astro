@@ -113,47 +113,12 @@ const dir = isRTL ? 'rtl' : 'ltr';
         color: var(--accent-color); 
       }
 
-      .portfolio-section {
+      main{
         min-height: 100vh;
         width: 100%;
         display: flex;
-        align-items: center;
-        justify-content: center;
-        padding-block: calc(var(--nav-height) + 2rem) 4rem;
-        transition: background-color var(--transition-speed) var(--transition-timing), color var(--transition-speed) var(--transition-timing);
-      }
-
-      .section-hero { background-color: var(--bg-hero); color: var(--text-hero); }
-      .section-about { background-color: var(--bg-about); color: var(--text-about); }
-      .section-projects { background-color: var(--bg-projects); color: var(--text-projects); }
-
-      .flex-split {
-        display: flex;
         flex-direction: column;
-        gap: 2.5rem;
-        width: 100%;
       }
-
-      .flex-split-child {
-        flex: 1 1 0%;
-        width: 100%;
-      }
-
-      .flex-grid {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 2rem;
-        width: 100%;
-      }
-
-      .flex-grid-item {
-        flex: 1 1 100%;
-        background-color: var(--bg-card);
-        border: 1px solid var(--border-card);
-        padding: 2.5rem;
-        border-radius: 8px;
-      }
-
       @media (min-width: 768px) {
         .layout-container { padding-inline: 3rem; }
         .portfolio-section { padding-block: var(--nav-height) 0; }
@@ -163,13 +128,6 @@ const dir = isRTL ? 'rtl' : 'ltr';
           gap: 2rem;
           margin-inline-end: 1rem;
         }
-
-        .flex-split { flex-direction: row; align-items: center; }
-        .flex-grid-item { flex: 1 1 calc(50% - 1rem); }
-      }
-
-      @media (min-width: 1024px) {
-        .flex-grid-item { flex: 1 1 calc(33.333% - 1.34rem); }
       }
     </style>
 
