@@ -109,19 +109,6 @@ const dir = isRTL ? 'rtl' : 'ltr';
         color: var(--accent-color); 
       }
 
-      .nav-indicator-slider {
-        display: none;
-        position: absolute;
-        bottom: -6px;
-        inset-inline-start: 0;
-        height: 2px;
-        background-color: var(--accent-color);
-        border-radius: 2px;
-        pointer-events: none;
-        will-change: transform, width;
-        transition: transform var(--transition-speed) var(--transition-timing), width var(--transition-speed) var(--transition-timing), opacity var(--transition-speed) var(--transition-timing);
-      }
-
       .nav-icon-btn {
         background: transparent;
         border: none;
@@ -391,7 +378,6 @@ const dir = isRTL ? 'rtl' : 'ltr';
           margin-inline-end: 1rem;
         }
 
-        .nav-indicator-slider { display: block; }
         .burger-trigger { display: none; }
         .flex-split { flex-direction: row; align-items: center; }
         .flex-grid-item { flex: 1 1 calc(50% - 1rem); }
@@ -463,122 +449,11 @@ const dir = isRTL ? 'rtl' : 'ltr';
       <slot />
     </main>
 
-    <!-- <script>
-      const header = document.getElementById('portfolio-navbar');
-      const burgerBtn = document.getElementById('burger-menu-toggle');
-      const navMenu = document.getElementById('mobile-menu-drawer');
-      const movingSlider = document.getElementById('moving-nav-slider');
-
-      // Modal Setup
-      const searchOpenBtn = document.getElementById('search-modal-open-btn');
-      const searchCloseBtn = document.getElementById('search-modal-close-btn');
-      const searchOverlay = document.getElementById('search-overlay');
-      const searchInputField = document.getElementById('modal-search-field') as HTMLInputElement | null;
-
-      const openSearchModal = () => {
-        searchOverlay?.classList.add('is-open');
-        document.body.classList.add('search-modal-open');
-        setTimeout(() => searchInputField?.focus(), 50);
-      };
-
-      const closeSearchModal = () => {
-        searchOverlay?.classList.remove('is-open');
-        document.body.classList.remove('search-modal-open');
-      };
-
-      searchOpenBtn?.addEventListener('click', openSearchModal);
-      searchCloseBtn?.addEventListener('click', closeSearchModal);
-      searchOverlay?.addEventListener('click', (e) => {
-        if (e.target === searchOverlay) closeSearchModal();
-      });
-
-      window.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && searchOverlay?.classList.contains('is-open')) closeSearchModal();
-        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
-          e.preventDefault();
-          searchOverlay?.classList.contains('is-open') ? closeSearchModal() : openSearchModal();
-        }
-      });
-
-      window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) header?.classList.add('is-scrolled');
-        else header?.classList.remove('is-scrolled');
-      });
-
-      const toggleMobileMenu = () => {
-        const isOpen = burgerBtn?.classList.toggle('is-active');
-        navMenu?.classList.toggle('is-active');
-        burgerBtn?.setAttribute('aria-expanded', String(isOpen));
-      };
-
-      burgerBtn?.addEventListener('click', toggleMobileMenu);
-
-      const navLinks = document.querySelectorAll('#mobile-menu-drawer a');
-      const targetSections = document.querySelectorAll('#home-view, #about-view, #projects-view');
-
-      const updateSliderPosition = (activeLink: HTMLElement | null) => {
-        if (!movingSlider) return;
-        if (activeLink && window.innerWidth >= 768) {
-          const container = activeLink.closest('.nav-links-list');
-          if (container) {
-            const linkRect = activeLink.getBoundingClientRect();
-            const containerRect = container.getBoundingClientRect();
-            
-            const isRtl = document.documentElement.getAttribute('dir') === 'rtl';
-            
-            const translationValue = isRtl 
-              ? containerRect.right - linkRect.right 
-              : linkRect.left - containerRect.left;
-
-            movingSlider.style.width = `${linkRect.width}px`;
-            movingSlider.style.transform = `translateX(${isRtl ? -translationValue : translationValue}px)`;
-            movingSlider.style.opacity = '1';
-            return;
-          }
-        }
-        movingSlider.style.opacity = '0';
-      };
-
-      const observerOptions = {
-        root: null,
-        rootMargin: '-40% 0px -50% 0px',
-        threshold: 0
-      };
-
-      const observerCallback = (entries: IntersectionObserverEntry[]) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const sectionId = entry.target.getAttribute('id');
-            let matchedLink: HTMLElement | null = null;
-
-            navLinks.forEach((link) => {
-              const hrefAttribute = link.getAttribute('href');
-              if (hrefAttribute && hrefAttribute.endsWith(`#${sectionId}`)) {
-                link.classList.add('is-active');
-                matchedLink = link as HTMLElement;
-              } else {
-                link.classList.remove('is-active');
-              }
-            });
-
-            if (matchedLink) updateSliderPosition(matchedLink);
-          }
-        });
-      };
-
-      const sectionObserver = new IntersectionObserver(observerCallback, observerOptions);
-      targetSections.forEach((section) => sectionObserver.observe(section));
-
-      window.addEventListener('resize', () => {
-        const currentActiveLink = document.querySelector('#mobile-menu-drawer a.is-active') as HTMLElement;
-        updateSliderPosition(currentActiveLink);
-      });
-    </script> -->
     <script>
       const header = document.getElementById('portfolio-navbar');
       const burgerBtn = document.getElementById('burger-menu-toggle');
       const navMenu = document.getElementById('mobile-menu-drawer');
-      const movingSlider = document.getElementById('moving-nav-slider');
+      // const movingSlider = document.getElementById('moving-nav-slider');
 
       // Modal Setup
       const searchOpenBtn = document.getElementById('search-modal-open-btn');
@@ -627,28 +502,6 @@ const dir = isRTL ? 'rtl' : 'ltr';
       const navLinks = document.querySelectorAll('#mobile-menu-drawer a');
       const targetSections = document.querySelectorAll('#home-view, #about-view, #projects-view');
 
-      const updateSliderPosition = (activeLink: HTMLElement | null) => {
-        if (!movingSlider) return;
-        if (activeLink && window.innerWidth >= 768) {
-          const container = activeLink.closest('.nav-links-list');
-          if (container) {
-            const linkRect = activeLink.getBoundingClientRect();
-            const containerRect = container.getBoundingClientRect();
-            
-            // Fix: Track the physical left offset regardless of direction.
-            // Since the slider's starting position (left: 0) matches the container's left edge,
-            // the translation delta on the physical X-axis is always exactly this difference.
-            const translationValue = linkRect.left - containerRect.left;
-
-            movingSlider.style.width = `${linkRect.width}px`;
-            movingSlider.style.transform = `translateX(${translationValue}px)`;
-            movingSlider.style.opacity = '1';
-            return;
-          }
-        }
-        movingSlider.style.opacity = '0';
-      };
-
       const observerOptions = {
         root: null,
         rootMargin: '-40% 0px -50% 0px',
@@ -670,8 +523,6 @@ const dir = isRTL ? 'rtl' : 'ltr';
                 link.classList.remove('is-active');
               }
             });
-
-            if (matchedLink) updateSliderPosition(matchedLink);
           }
         });
       };
@@ -679,10 +530,6 @@ const dir = isRTL ? 'rtl' : 'ltr';
       const sectionObserver = new IntersectionObserver(observerCallback, observerOptions);
       targetSections.forEach((section) => sectionObserver.observe(section));
 
-      window.addEventListener('resize', () => {
-        const currentActiveLink = document.querySelector('#mobile-menu-drawer a.is-active') as HTMLElement;
-        updateSliderPosition(currentActiveLink);
-      });
     </script>
   </body>
 </html>
